@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+    <!-- Producao   -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://localhost:3306/spedfiscalp" />
+            <property name="username" value="root" />
+            <property name="password" value="root" />
+            <property name="removeAbandoned" value="true"/>
+            <property name="initialSize" value="3" />
+            <property name="maxActive" value="3" />
+            <property name="testOnBorrow" value="true" />
+            <property name="validationQuery" value="SELECT 1" />            
+    </bean>
+
+
+    <bean id="NamedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" scope="singleton">
+            <constructor-arg ref="dataSource" />
+    </bean>
+
+
+    <bean id="TBRelatorioEmailDAO" class="br.com.asisprojetos.DAO.TBRelatorioEmailDAO" scope="prototype">
+            <property name="namedParameterJdbcTemplate" ref="NamedParameterJdbcTemplate" />
+    </bean>
+
+    <bean id="TBRelatorioConsumoDAO" class="br.com.asisprojetos.DAO.TBRelatorioConsumoDAO" scope="prototype">
+            <property name="namedParameterJdbcTemplate" ref="NamedParameterJdbcTemplate" />
+    </bean>
+
+    <bean id="TBContratoDAO" class="br.com.asisprojetos.DAO.TBContratoDAO" scope="prototype">
+            <property name="namedParameterJdbcTemplate" ref="NamedParameterJdbcTemplate" />
+    </bean>
+
+    <bean id="TBRelatorioDiagnosticoDAO" class="br.com.asisprojetos.DAO.TBRelatorioDiagnosticoDAO" scope="prototype">
+            <property name="namedParameterJdbcTemplate" ref="NamedParameterJdbcTemplate" />
+    </bean>
+
+    <bean id="Config" class="br.com.asisprojetos.mailreport.Config" scope="singleton">
+    </bean>
+
+    <bean id="GoogleChartRequest" class="br.com.asisprojetos.request.GoogleChartRequest" scope="prototype">
+        <constructor-arg ref="Config" />
+    </bean>
+    
+    <bean id="BarChartDemo" class="br.com.asisprojetos.graph.BarChartDemo" scope="prototype">
+            <constructor-arg ref="Config" />
+            <constructor-arg ref="TBRelatorioConsumoDAO" />
+            <constructor-arg ref="TBContratoDAO" />
+            <constructor-arg ref="TBRelatorioDiagnosticoDAO" />
+            <constructor-arg ref="GoogleChartRequest" />
+    </bean>
+    
+    <bean id="SendEmail" class="br.com.asisprojetos.email.SendEmail" scope="prototype">
+            <constructor-arg ref="Config" />
+    </bean>
+    
+
+</beans>
