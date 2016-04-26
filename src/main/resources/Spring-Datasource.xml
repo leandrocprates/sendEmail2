@@ -7,7 +7,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     <!-- Producao   -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
             <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-            <property name="url" value="jdbc:mysql://localhost:3306/spedfiscalp" />
+            <property name="url" value="jdbc:mysql://localhost:3306/teste" />
             <property name="username" value="root" />
             <property name="password" value="root" />
             <property name="removeAbandoned" value="true"/>
